@@ -1,8 +1,20 @@
+import dynamic from 'next/dynamic';
+
 import { Box, Center, Spacer, Stack } from '@chakra-ui/react';
+import { useWallet } from '@solana/wallet-adapter-react';
+
+import Connected from '../components/Connected';
+import Disconnected from '../components/Disconnected';
 
 import styles from '../styles/Home.module.css';
 
+const Navbar = dynamic(() => import('../components/Navbar'), {
+  ssr: false
+});
+
 const Home = () => {
+  const { connected } = useWallet();
+
   return (
     <div className={styles.container}>
       <Box
@@ -12,9 +24,10 @@ const Home = () => {
         backgroundPosition="center"
       >
         <Stack w="full" h="calc(100vh)" justify="center">
+          <Navbar />
           <Spacer />
 
-          <Center></Center>
+          <Center>{connected ? <Connected /> : <Disconnected />}</Center>
 
           <Spacer />
 
